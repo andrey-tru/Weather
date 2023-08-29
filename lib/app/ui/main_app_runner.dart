@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:weather/app/app.dart';
 
 class MainAppRunner implements AppRunner {
@@ -16,10 +18,11 @@ class MainAppRunner implements AppRunner {
 
     await Firebase.initializeApp();
 
-    ///init app
-    initDi(env);
+    HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory(),
+    );
 
-    ///init config
+    initDi(env);
   }
 
   @override
