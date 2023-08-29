@@ -1,0 +1,8 @@
+{
+    "auth": {
+        "login": "Вход",
+        "loginDescription": "Введите данные для входа",
+        "password": "Пароль",
+        "signIn": "Войти"
+    }
+}
