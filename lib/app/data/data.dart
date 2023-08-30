@@ -1,4 +1,2 @@
-export 'app_colors.dart';
-export 'dio_container.dart';
+export 'dio_app_api.dart';
 export 'main_app_config.dart';
-export 'text_styles.dart';

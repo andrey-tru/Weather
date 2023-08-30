@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/app/app.dart';
-import 'package:weather/feature/auth/auth.dart';
+import 'package:weather/feature/feature.dart';
 
 class MainAppBuider implements AppBuilder {
   @override
@@ -23,8 +23,7 @@ class _GlobalProviders extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<AuthCubit>(
-          create: (BuildContext context) =>
-              AuthCubit(locator<AuthRepository>()),
+          create: (BuildContext context) => locator.get<AuthCubit>(),
         ),
       ],
       child: MaterialApp(
