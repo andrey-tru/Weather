@@ -26,7 +26,6 @@ class AppTextField extends StatelessWidget {
       maxLength: maxLength,
       controller: controller,
       style: TextStyles.b1,
-      cursorHeight: 15.0,
       cursorColor: AppColors.cursorColor,
       obscureText: obscureText,
       decoration: InputDecoration(

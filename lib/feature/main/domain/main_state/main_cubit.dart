@@ -27,7 +27,7 @@ class MainCubit extends HydratedCubit<MainState> {
     if (!serviceEnabled) {
       emit(
         state.copyWith(
-          error: tr('error.disabled'),
+          error: tr('error.geolocator.disabled'),
           isLoading: false,
           selectedWeather: 0,
         ),
@@ -41,7 +41,7 @@ class MainCubit extends HydratedCubit<MainState> {
       if (permission == LocationPermission.denied) {
         emit(
           state.copyWith(
-            error: tr('error.denied'),
+            error: tr('error.eolocator.denied'),
             isLoading: false,
             selectedWeather: 0,
           ),
@@ -53,7 +53,7 @@ class MainCubit extends HydratedCubit<MainState> {
     if (permission == LocationPermission.deniedForever) {
       emit(
         state.copyWith(
-          error: tr('error.deniedForever'),
+          error: tr('error.eolocator.deniedForever'),
           isLoading: false,
           selectedWeather: 0,
         ),
