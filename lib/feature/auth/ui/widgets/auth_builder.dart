@@ -8,8 +8,10 @@ class AuthBuilder extends StatelessWidget {
     required this.isNotAuthorized,
     required this.isAuthorized,
     required this.isLoading,
+    required this.isSplash,
   });
 
+  final WidgetBuilder isSplash;
   final WidgetBuilder isNotAuthorized;
   final WidgetBuilder isAuthorized;
   final WidgetBuilder isLoading;
@@ -19,6 +21,7 @@ class AuthBuilder extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       builder: (BuildContext context, AuthState state) {
         return state.when(
+          splash: () => isSplash(context),
           notAuthorization: () => isNotAuthorized(context),
           authorization: () => isAuthorized(context),
           loading: () => isLoading(context),

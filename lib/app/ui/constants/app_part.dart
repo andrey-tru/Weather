@@ -8,9 +8,18 @@ class AppPart {
 }
 
 class AppIcons {
-  final String storm = '$icons/storm.svg';
+  final String geo = '$icons/geo.svg';
+  final String wind = '$icons/wind.svg';
+  final String drop = '$icons/drop.svg';
 }
 
 class AppImage {
   final String ellipse = '$image/ellipse.png';
+  final String sun = '$image/sun.png';
+  final String partlyCloudy = '$image/partly_сloudy.png';
+  final String cloudy = '$image/cloudy.png';
+  final String shower = '$image/shower.png';
+  final String rain = '$image/rain.png';
+  final String storm = '$image/storm.png';
+  final String snow = '$image/snow.png';
 }

@@ -1,12 +1,48 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 import 'package:weather/app/app.dart';
 import 'package:weather/feature/feature.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final StreamController<SwipeRefreshState> _controller =
+      StreamController<SwipeRefreshState>.broadcast();
+
+  Stream<SwipeRefreshState> get _stream => _controller.stream;
+
+  void _onRefresh(MainCubit mainCubit) => mainCubit.determinePosition();
+
+  String icon(int id) {
+    switch (id) {
+      case >= 200 && < 250:
+        return AppPart.image.storm;
+      case >= 300 && < 350:
+        return AppPart.image.shower;
+      case >= 500 && < 550:
+        return AppPart.image.rain;
+      case >= 600 && < 650:
+        return AppPart.image.snow;
+      case >= 700 && < 790:
+        return AppPart.image.cloudy;
+      case 800:
+        return AppPart.image.sun;
+      case 801:
+        return AppPart.image.partlyCloudy;
+      case > 801 && < 850:
+        return AppPart.image.cloudy;
+      default:
+        return AppPart.image.sun;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +52,7 @@ class MainScreen extends StatelessWidget {
         if (state.isLoading) {
           return const AppLoader();
         }
-        final weather = state.weatherList![0];
+
         return Scaffold(
           body: ColoredBox(
             color: AppColors.background,
@@ -31,177 +67,63 @@ class MainScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              child: SafeArea(
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Image.asset(
-                        AppPart.image.ellipse,
-                        width: 300,
-                      ),
+              child: Stack(
+                children: <Widget>[
+                  Align(
+                    alignment: const Alignment(0, -0.77),
+                    child: Image.asset(
+                      AppPart.image.ellipse,
+                      width: 300,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            'Архангельск, Россия',
-                            style:
-                                TextStyles.b2.copyWith(color: AppColors.white),
-                          ),
-                          const SizedBox(height: 24.0),
-                          GestureDetector(
-                            onTap: () => _signIn(locator.get<MainCubit>()),
-                            child: SvgPicture.asset(
-                              AppPart.icons.storm,
-                              width: 180,
-                              height: 180,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: SwipeRefresh.cupertino(
+                      stateStream: _stream,
+                      onRefresh: () async =>
+                          _onRefresh(locator.get<MainCubit>()),
+                      children: <Widget>[
+                        CityContainer(
+                          city: state.city ?? '',
+                          onTap: () => context.read<AuthCubit>().logOut(),
+                        ),
+                        if (state.weatherList == null ||
+                            state.weatherList!.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 300.0),
+                            child: Center(
+                              child: Text(
+                                'Не удалось загрузить  данные',
+                                style: TextStyles.b1Medium,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '${weather.temp.toStringAsFixed(0)}º',
-                            style: TextStyles.title,
-                          ),
-                          Text(
-                            weather.description[0].toUpperCase() +
-                                weather.description.substring(1),
-                            style:
-                                TextStyles.b1.copyWith(color: AppColors.white),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Text(
-                            'Макс.: ${weather.tempMax.toStringAsFixed(0)}º Мин: ${weather.tempMin.toStringAsFixed(0)}º',
-                            style:
-                                TextStyles.b1.copyWith(color: AppColors.white),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 24.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: const Color.fromRGBO(255, 255, 255, 0.20),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Сегодня',
-                                        style: TextStyles.b1
-                                            .copyWith(color: AppColors.white),
-                                      ),
-                                      Text(
-                                        DateFormat('dd MMMM', 'ru')
-                                            .format(DateTime.parse(weather.dt)),
-                                        style: TextStyles.b2
-                                            .copyWith(color: AppColors.white),
-                                      ),
-                                    ],
-                                  ),
+                          )
+                        else
+                          Column(
+                            children: <Widget>[
+                              SelectedWeatherContainer(
+                                weather:
+                                    state.weatherList![state.selectedWeather],
+                                icon: icon(
+                                  state.weatherList![state.selectedWeather]
+                                      .iconId,
                                 ),
-                                Container(height: 1.0, color: AppColors.white),
-                                Container(
-                                  margin: const EdgeInsets.all(16.0),
-                                  height: 142,
-                                  child: ListView.builder(
-                                    itemCount: state.weatherList!.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        padding: EdgeInsets.all(
-                                          index == 1 ? 15.0 : 16.0,
-                                        ),
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                    4 -
-                                                20,
-                                        decoration: index == 1
-                                            ? BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                border: Border.all(
-                                                    color: AppColors.white),
-                                                color: const Color.fromRGBO(
-                                                  255,
-                                                  255,
-                                                  255,
-                                                  0.40,
-                                                ),
-                                              )
-                                            : null,
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text(
-                                              DateFormat('jm', 'ru').format(
-                                                  DateTime.parse(state
-                                                      .weatherList![index].dt)),
-                                              style: TextStyles.b2.copyWith(
-                                                  color: AppColors.white),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 16.0,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                AppPart.icons.storm,
-                                                width: 32,
-                                                height: 32,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${state.weatherList![index].temp.toStringAsFixed(0)}º',
-                                              style: TextStyles.b2.copyWith(
-                                                  color: AppColors.white),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                              ForecastContainer(
+                                weatherList: state.weatherList!,
+                                icon: icon,
+                                selectedWeather: state.selectedWeather,
+                              ),
+                              WindContainer(
+                                weather:
+                                    state.weatherList![state.selectedWeather],
+                              ),
+                            ],
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: const Color.fromRGBO(255, 255, 255, 0.20),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      '20 марта',
-                                      style: TextStyles.b2
-                                          .copyWith(color: AppColors.white),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      '20 марта',
-                                      style: TextStyles.b2
-                                          .copyWith(color: AppColors.white),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -209,7 +131,4 @@ class MainScreen extends StatelessWidget {
       },
     );
   }
-
-  void _signIn(MainCubit authCubit) =>
-      authCubit.forecast(lat: '34.0901', lon: '-118.4065');
 }

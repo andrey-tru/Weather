@@ -7,6 +7,7 @@ part 'weather_list.g.dart';
 class WeatherListModel with _$WeatherListModel {
   const factory WeatherListModel({
     required List<Map<String, dynamic>> list,
+    required Map<String, dynamic> city,
   }) = _WeatherListModel;
 
   factory WeatherListModel.fromJson(Map<String, dynamic> json) =>

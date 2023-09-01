@@ -2,6 +2,8 @@ part of 'auth_cubit.dart';
 
 @freezed
 class AuthState with _$AuthState {
+  factory AuthState.splash() = _AuthStateSplash;
+
   factory AuthState.notAuthorization() = _AuthStateNotAuthorization;
 
   factory AuthState.authorization() = _AuthStateAuthorization;

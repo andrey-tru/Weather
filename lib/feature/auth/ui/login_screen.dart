@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: Text(
                     tr('auth.signIn'),
-                    style: TextStyles.b1Medium.copyWith(color: AppColors.white),
+                    style: TextStyles.b1Medium,
                   ),
                 ),
               ],

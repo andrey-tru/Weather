@@ -15,10 +15,10 @@ import 'package:weather/app/app.dart' as _i3;
 import 'package:weather/app/data/dio_app_api.dart' as _i7;
 import 'package:weather/app/data/main_app_config.dart' as _i4;
 import 'package:weather/feature/auth/data/network_auth_repository.dart' as _i6;
-import 'package:weather/feature/auth/domain/auth_state/auth_cubit.dart' as _i8;
+import 'package:weather/feature/auth/domain/auth_state/auth_cubit.dart' as _i10;
 import 'package:weather/feature/feature.dart' as _i5;
-import 'package:weather/feature/main/data/network_main_repository.dart' as _i9;
-import 'package:weather/feature/main/domain/main_state/main_cubit.dart' as _i10;
+import 'package:weather/feature/main/data/network_main_repository.dart' as _i8;
+import 'package:weather/feature/main/domain/main_state/main_cubit.dart' as _i9;
 
 const String _prod = 'prod';
 const String _dev = 'dev';
@@ -52,12 +52,15 @@ extension GetItInjectableX on _i1.GetIt {
       registerFor: {_prod},
     );
     gh.singleton<_i3.AppApi>(_i7.DioAppApi(gh<_i3.AppConfig>()));
-    gh.singleton<_i8.AuthCubit>(_i8.AuthCubit(gh<_i5.AuthRepository>()));
     gh.factory<_i5.MainRepository>(
-      () => _i9.NetworkMainRepository(gh<_i3.AppApi>()),
+      () => _i8.NetworkMainRepository(gh<_i3.AppApi>()),
       registerFor: {_prod},
     );
-    gh.singleton<_i10.MainCubit>(_i10.MainCubit(gh<_i5.MainRepository>()));
+    gh.singleton<_i9.MainCubit>(_i9.MainCubit(gh<_i5.MainRepository>()));
+    gh.singleton<_i10.AuthCubit>(_i10.AuthCubit(
+      gh<_i5.AuthRepository>(),
+      gh<_i5.MainCubit>(),
+    ));
     return this;
   }
 }

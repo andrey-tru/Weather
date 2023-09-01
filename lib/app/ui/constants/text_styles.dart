@@ -10,6 +10,22 @@ class TextStyles {
     color: AppColors.white,
   );
 
+  static TextStyle title2 = const TextStyle(
+    fontFamily: 'Ubuntu',
+    fontWeight: FontWeight.w700,
+    fontSize: 48.0,
+    height: 1.1,
+    color: AppColors.white,
+  );
+
+  static TextStyle description = const TextStyle(
+    fontFamily: 'Ubuntu',
+    fontWeight: FontWeight.w400,
+    fontSize: 24.0,
+    height: 1.1,
+    color: AppColors.white,
+  );
+
   static TextStyle h1 = const TextStyle(
     fontFamily: 'Ubuntu',
     fontWeight: FontWeight.w500,
@@ -39,7 +55,7 @@ class TextStyles {
     fontWeight: FontWeight.w500,
     fontSize: 17.0,
     height: 1.4,
-    color: AppColors.textColor,
+    color: AppColors.white,
   );
 
   static TextStyle b2 = const TextStyle(
@@ -47,7 +63,7 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     fontSize: 15.0,
     height: 1.5,
-    color: AppColors.textColor,
+    color: AppColors.white,
   );
 
   static TextStyle b2Medium = const TextStyle(
@@ -55,7 +71,7 @@ class TextStyles {
     fontWeight: FontWeight.w500,
     fontSize: 15.0,
     height: 1.5,
-    color: AppColors.textColor,
+    color: AppColors.white,
   );
 
   static TextStyle b3 = const TextStyle(

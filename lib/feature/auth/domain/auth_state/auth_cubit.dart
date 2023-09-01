@@ -10,9 +10,21 @@ part 'auth_cubit.g.dart';
 
 @Singleton()
 class AuthCubit extends HydratedCubit<AuthState> {
-  AuthCubit(this.authRepository) : super(AuthState.notAuthorization());
+  AuthCubit(this.authRepository, this.mainCubit) : super(AuthState.splash());
 
   final AuthRepository authRepository;
+  final MainCubit mainCubit;
+
+  Future<void> initial() async {
+    final AuthState initialState =
+        state == AuthState.splash() ? AuthState.notAuthorization() : state;
+    emit(AuthState.splash());
+    mainCubit.determinePosition();
+    Future<void>.delayed(
+      const Duration(seconds: 2),
+      () => emit(initialState),
+    );
+  }
 
   Future<void> signIn({
     required String email,
@@ -29,6 +41,8 @@ class AuthCubit extends HydratedCubit<AuthState> {
       rethrow;
     }
   }
+
+  void logOut() => emit(AuthState.notAuthorization());
 
   @override
   AuthState? fromJson(Map<String, dynamic> json) {

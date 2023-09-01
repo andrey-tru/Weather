@@ -18,11 +18,11 @@ class DioAppApi implements AppApi {
 
   @override
   Future<Response<Map<String, dynamic>>> forecast({
-    required String lat,
-    required String lon,
+    required double lat,
+    required double lon,
   }) async {
     return dio.get(
-    // ignore: lines_longer_than_80_chars
+      // ignore: lines_longer_than_80_chars
       'forecast?lat=$lat&lon=$lon&lang=ru&units=metric&appid=${dotenv.env['WEATHER_KEY']}',
     );
   }

@@ -13,7 +13,8 @@ class WeatherModel with _$WeatherModel {
     required double tempMin,
     required double windSpeed,
     required int windDeg,
-    required double windGust,
+    required int humidity,
+    required int iconId,
   }) = _WeatherModel;
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) =>

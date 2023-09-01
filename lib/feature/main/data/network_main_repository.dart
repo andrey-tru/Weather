@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:weather/app/app.dart';
@@ -12,8 +14,10 @@ class NetworkMainRepository implements MainRepository {
   final AppApi api;
 
   @override
-  Future<List<WeatherModel>> forecast(
-      {required String lat, required String lon}) async {
+  Future<(List<WeatherModel>, String)> forecast({
+    required double lat,
+    required double lon,
+  }) async {
     try {
       final Response<Map<String, dynamic>> response =
           await api.forecast(lat: lat, lon: lon);
@@ -26,15 +30,17 @@ class NetworkMainRepository implements MainRepository {
         e['temp'] = e['main']['temp'];
         e['tempMax'] = e['main']['temp_max'];
         e['tempMin'] = e['main']['temp_min'];
+        e['humidity'] = e['main']['humidity'];
         e['description'] = e['weather'][0]['description'];
+        e['iconId'] = e['weather'][0]['id'];
         e['windSpeed'] = e['wind']['speed'];
         e['windDeg'] = e['wind']['deg'];
-        e['windGust'] = e['wind']['gust'];
         return WeatherModel.fromJson(e);
       }).toList();
 
-      return weatherList;
+      return (weatherList, weatherListModel.city['name'].toString());
     } catch (_) {
+      print(_);
       rethrow;
     }
   }

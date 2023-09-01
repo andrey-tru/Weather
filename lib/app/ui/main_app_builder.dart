@@ -23,7 +23,7 @@ class _GlobalProviders extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<AuthCubit>(
-          create: (BuildContext context) => locator.get<AuthCubit>(),
+          create: (BuildContext context) => locator.get<AuthCubit>()..initial(),
         ),
       ],
       child: MaterialApp(

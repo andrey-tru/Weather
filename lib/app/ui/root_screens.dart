@@ -8,6 +8,7 @@ class RootScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthBuilder(
+      isSplash: (BuildContext context) => const SplashScreen(),
       isNotAuthorized: (BuildContext context) => LoginScreen(),
       isAuthorized: (BuildContext context) => const MainScreen(),
       isLoading: (BuildContext context) => const AppLoader(),
