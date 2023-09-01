@@ -9,12 +9,15 @@ class AppTextField extends StatelessWidget {
     this.maxLength,
     this.controller,
     this.labelText,
+    this.obscureText = false, this.suffixIcon,
   });
 
   final String? Function(String?)? validator;
   final int? maxLength;
   final TextEditingController? controller;
   final String? labelText;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,7 @@ class AppTextField extends StatelessWidget {
       style: TextStyles.b1,
       cursorHeight: 15.0,
       cursorColor: AppColors.cursorColor,
+      obscureText: obscureText,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
         focusedBorder: const UnderlineInputBorder(
@@ -35,6 +39,7 @@ class AppTextField extends StatelessWidget {
         ),
         labelText: labelText,
         labelStyle: TextStyles.b1.copyWith(color: AppColors.greyText),
+        suffixIcon: suffixIcon,
       ),
     );
   }

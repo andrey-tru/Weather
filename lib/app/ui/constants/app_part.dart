@@ -1,6 +1,5 @@
 const String icons = 'assets/icons';
-const String image= 'assets/image';
-
+const String image = 'assets/image';
 
 class AppPart {
   static final AppIcons icons = AppIcons();
@@ -11,6 +10,8 @@ class AppIcons {
   final String geo = '$icons/geo.svg';
   final String wind = '$icons/wind.svg';
   final String drop = '$icons/drop.svg';
+  final String eye = '$icons/eye.svg';
+  final String eyeOff = '$icons/eye-off.svg';
 }
 
 class AppImage {

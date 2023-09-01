@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:weather/app/app.dart';
 import 'package:weather/feature/feature.dart';
 
 part 'main_state.dart';
@@ -25,7 +27,7 @@ class MainCubit extends HydratedCubit<MainState> {
     if (!serviceEnabled) {
       emit(
         state.copyWith(
-          error: 'Location services are disabled.',
+          error: tr('error.disabled'),
           isLoading: false,
           selectedWeather: 0,
         ),
@@ -39,7 +41,7 @@ class MainCubit extends HydratedCubit<MainState> {
       if (permission == LocationPermission.denied) {
         emit(
           state.copyWith(
-            error: 'Location permissions are denied',
+            error: tr('error.denied'),
             isLoading: false,
             selectedWeather: 0,
           ),
@@ -51,8 +53,7 @@ class MainCubit extends HydratedCubit<MainState> {
     if (permission == LocationPermission.deniedForever) {
       emit(
         state.copyWith(
-          error:
-              'Location permissions are permanently denied, we cannot request permissions.',
+          error: tr('error.deniedForever'),
           isLoading: false,
           selectedWeather: 0,
         ),
@@ -77,12 +78,13 @@ class MainCubit extends HydratedCubit<MainState> {
           weatherList: weatherList,
           city: city,
           selectedWeather: 0,
+          error: null,
         ),
       );
     } catch (error) {
       emit(
         state.copyWith(
-          error: error.toString(),
+          error: ErrorModel.fromException(error).message,
           isLoading: false,
           selectedWeather: 0,
         ),

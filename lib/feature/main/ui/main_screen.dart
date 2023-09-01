@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
@@ -88,13 +89,15 @@ class _MainScreenState extends State<MainScreen> {
                           onTap: () => context.read<AuthCubit>().logOut(),
                         ),
                         if (state.weatherList == null ||
-                            state.weatherList!.isEmpty)
+                            state.weatherList!.isEmpty ||
+                            state.error != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 300.0),
                             child: Center(
                               child: Text(
-                                'Не удалось загрузить  данные',
+                                state.error ?? tr('error.loading'),
                                 style: TextStyles.b1Medium,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           )

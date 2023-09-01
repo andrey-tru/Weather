@@ -1,11 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:weather/app/app.dart';
 import 'package:weather/feature/feature.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _obscureText = true;
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -15,6 +23,12 @@ class LoginScreen extends StatelessWidget {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +60,16 @@ class LoginScreen extends StatelessWidget {
                 AppTextField(
                   controller: _controllerPassword,
                   labelText: tr('auth.password'),
+                  obscureText: _obscureText,
+                  suffixIcon: GestureDetector(
+                    onTap: _toggle,
+                    child: SvgPicture.asset(
+                      _obscureText ? AppPart.icons.eyeOff : AppPart.icons.eye,
+                      width: 24.0,
+                      height: 24.0,
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 48.0),
                 ElevatedButton(

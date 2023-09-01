@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:weather/app/app.dart';
 import 'package:weather/feature/feature.dart';
-import 'package:weather/feature/main/domain/models/weather_list/weather_list.dart';
 
 @Injectable(as: MainRepository)
 @prod
@@ -40,7 +39,6 @@ class NetworkMainRepository implements MainRepository {
 
       return (weatherList, weatherListModel.city['name'].toString());
     } catch (_) {
-      print(_);
       rethrow;
     }
   }

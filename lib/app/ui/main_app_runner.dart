@@ -25,7 +25,7 @@ class MainAppRunner implements AppRunner {
 
     await Firebase.initializeApp();
 
-    await dotenv.load(fileName: ".env");
+    await dotenv.load();
   }
 
   @override

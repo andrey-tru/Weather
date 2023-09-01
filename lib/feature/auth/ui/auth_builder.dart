@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/app/domain/models/error.dart';
 import 'package:weather/feature/auth/auth.dart';
 
 class AuthBuilder extends StatelessWidget {
@@ -37,18 +38,19 @@ class AuthBuilder extends StatelessWidget {
           ),
       listener: (BuildContext context, AuthState state) {
         state.whenOrNull(
-          error: (String error) => _showSnackBar(context, error),
+          error: (String error) =>
+              _showSnackBar(context, ErrorModel.fromException(error)),
         );
       },
     );
   }
 
-  void _showSnackBar(BuildContext context, String error) {
+  void _showSnackBar(BuildContext context, ErrorModel error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
         content: SingleChildScrollView(
-          child: Text(error),
+          child: Text('Error: ${error.errorMessage}, Message:${error.message}'),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:weather/app/app.dart';
@@ -11,20 +12,19 @@ class WindContainer extends StatelessWidget {
   String _humidity() {
     switch (weather.humidity) {
       case <= 10 && >= 22:
-        return 'Сухая влажность';
+        return tr('humidity.dry');
       case <= 23 && >= 40:
-        return 'Низкая влажность';
+        return tr('humidity.low');
       case <= 41 && >= 52:
-        return 'Средняя влажность';
+        return tr('humidity.medium');
       case <= 53 && >= 64:
-        return 'Привычная влажность';
+        return tr('humidity.habitual');
       case <= 65 && >= 73:
-        return 'Умеренная влажность';
+        return tr('humidity.moderate');
       case <= 74 && >= 81:
-        return 'Высокая влажность';
+        return tr('humidity.high');
       case <= 82:
-        return 'Туманная влажность';
-
+        return tr('humidity.foggy');
       default:
         return '';
     }
@@ -33,21 +33,21 @@ class WindContainer extends StatelessWidget {
   String _windDirection() {
     switch (weather.windDeg) {
       case >= 338 && <= 22:
-        return 'Ветер северный';
+        return tr('wind.northern');
       case >= 23 && <= 67:
-        return 'Ветер северо-восточный';
+        return tr('wind.northeastern');
       case >= 68 && <= 112:
-        return 'Ветер восточный';
+        return tr('wind.oriental');
       case >= 113 && <= 157:
-        return 'Ветер юго-восточный';
+        return tr('wind.southeastern');
       case >= 158 && <= 202:
-        return 'Ветер южный';
+        return tr('wind.southern');
       case >= 203 && <= 247:
-        return 'Ветер юго-западный';
+        return tr('wind.southwestern');
       case >= 248 && <= 292:
-        return 'Ветер западный';
+        return tr('wind.west');
       case >= 293 && <= 337:
-        return 'Ветер северо-западный';
+        return tr('wind.northwestern');
       default:
         return '';
     }
@@ -71,7 +71,7 @@ class WindContainer extends StatelessWidget {
           const SizedBox(height: 16.0),
           _InfoContainer(
             icon: AppPart.icons.drop,
-            info: '${weather.humidity} %',
+            info: '${weather.humidity}%',
             text: _humidity(),
           ),
         ],

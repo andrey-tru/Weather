@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:weather/app/app.dart';
 import 'package:weather/feature/feature.dart';
@@ -33,7 +34,13 @@ class SelectedWeatherContainer extends StatelessWidget {
         ),
         const SizedBox(height: 8.0),
         Text(
-          'Макс.: ${weather.tempMax.toStringAsFixed(0)}º Мин: ${weather.tempMin.toStringAsFixed(0)}º',
+          tr(
+            'weather.maxmin',
+            namedArgs: <String, String>{
+              'max': weather.tempMax.toStringAsFixed(0),
+              'min': weather.tempMin.toStringAsFixed(0),
+            },
+          ),
           style: TextStyles.b1.copyWith(color: AppColors.white),
         ),
       ],
