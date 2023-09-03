@@ -47,8 +47,16 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainCubit, MainState>(
+    return BlocConsumer<MainCubit, MainState>(
       bloc: locator.get<MainCubit>(),
+      listener: (BuildContext context, MainState state) {
+        if (state.error != null) {
+          Notifications.showSnackBar(
+            context,
+            ErrorModel.fromException(state.error),
+          );
+        }
+      },
       builder: (BuildContext context, MainState state) {
         if (state.isLoading) {
           return const AppLoader();
@@ -89,13 +97,12 @@ class _MainScreenState extends State<MainScreen> {
                           onTap: () => context.read<AuthCubit>().logOut(),
                         ),
                         if (state.weatherList == null ||
-                            state.weatherList!.isEmpty ||
-                            state.error != null)
+                            state.weatherList!.isEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 300.0),
                             child: Center(
                               child: Text(
-                                state.error ?? tr('error.loading'),
+                                tr('error.loading'),
                                 style: TextStyles.b1Medium,
                                 textAlign: TextAlign.center,
                               ),

@@ -22,10 +22,13 @@ class ErrorModel {
           error: error,
         );
       } catch (_) {
-        return ErrorModel(message: tr('error.unknow'));
+        return ErrorModel(message: tr('error.unknown'));
       }
     }
-    return ErrorModel(message: tr('error.unknow'));
+    return ErrorModel(
+      message: error.toString(),
+      errorMessage: tr('error.error'),
+    );
   }
 
   final String message;
